@@ -21,12 +21,14 @@ RUN apk update && \
     cp /usr/share/zoneinfo/Europe/Istanbul /etc/localtime && \
     echo "Europe/Istanbul" >  /etc/timezone && \
     apk del tzdata
-    
+
+VOLUME /tmp
 VOLUME /srv 
+
 ENV FM_ROOT "/" 
+
 COPY entrypoint.sh /bin/entrypoint.sh 
-COPY --from=0 /go/src/github.com/filebrowser/filebrowser/cmd/filebrowser /bin/filebrowser
-RUN chmod +x /bin/filebrowser
+COPY --from=0 /go/src/github.com/filebrowser/filebrowser/cmd/filebrowser/filebrowser /bin/filebrowser
 COPY README.md /srv/README.md 
 EXPOSE 80 
 ENTRYPOINT ["/bin/entrypoint.sh"]
