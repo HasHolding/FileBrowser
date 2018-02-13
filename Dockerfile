@@ -12,12 +12,8 @@ RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags "-X main.version=${VER
 FROM alpine:latest 
 MAINTAINER "Levent SAGIROGLU" <LSagiroglu@gmail.com>
 # Henrique Dias - Web File Manager https://github.com/filebrowser/filebrowser
-RUN apk update && \
-    apk upgrade && \
-    apk add --update openssl && \
-    apk add --update tzdata && \    
-    apk add ca-certificates && \
-	   update-ca-certificates && \
+RUN apk add --update --no-cache ca-certificates tzdata && \	
+    update-ca-certificates && \
     cp /usr/share/zoneinfo/Europe/Istanbul /etc/localtime && \
     echo "Europe/Istanbul" >  /etc/timezone && \
     apk del tzdata
