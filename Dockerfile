@@ -8,23 +8,15 @@ RUN tar -xvf ${VERSION}.tar.gz --strip 1
 RUN go get ./...
 WORKDIR /go/src/github.com/filebrowser/filebrowser/cmd/filebrowser
 RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags "-X main.version=${VERSION}"
+FROM hasholding/alpine-base
+LABEL maintainer "Levent SAGIROGLU <LSagiroglu@gmail.com>"
 
-FROM alpine:latest 
-MAINTAINER "Levent SAGIROGLU" <LSagiroglu@gmail.com>
-# Henrique Dias - Web File Manager https://github.com/filebrowser/filebrowser
-RUN apk add --update --no-cache ca-certificates tzdata && \	
-    update-ca-certificates && \
-    cp /usr/share/zoneinfo/Europe/Istanbul /etc/localtime && \
-    echo "Europe/Istanbul" >  /etc/timezone && \
-    apk del tzdata
+VOLUME /shared 
 
-VOLUME /tmp
-VOLUME /srv 
-
-ENV FM_ROOT "/" 
+ENV FB_ROOT "/" 
 
 COPY entrypoint.sh /bin/entrypoint.sh 
 COPY --from=0 /go/src/github.com/filebrowser/filebrowser/cmd/filebrowser/filebrowser /bin/filebrowser
-COPY README.md /srv/README.md 
+COPY README.md /shared/README.md 
 EXPOSE 80 
 ENTRYPOINT ["/bin/entrypoint.sh"]
