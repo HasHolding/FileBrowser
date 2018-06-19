@@ -13,10 +13,12 @@ LABEL maintainer "Levent SAGIROGLU <LSagiroglu@gmail.com>"
 
 VOLUME /shared 
 
-ENV FB_ROOT "/" 
+ENV FB_ROOT "/shared/" 
+ENV FB_DB "/etc/fb.db" 
 
 COPY entrypoint.sh /bin/entrypoint.sh 
 COPY --from=0 /go/src/github.com/filebrowser/filebrowser/cmd/filebrowser/filebrowser /bin/filebrowser
 COPY README.md /shared/README.md 
 EXPOSE 80 
 ENTRYPOINT ["/bin/entrypoint.sh"]
+ 
