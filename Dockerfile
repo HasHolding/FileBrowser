@@ -1,5 +1,5 @@
 FROM golang:1.10-alpine
-ARG VERSION=v1.7.1
+ARG VERSION=v1.8
 RUN apk add --no-cache git 
 RUN apk add --update openssl
 WORKDIR /go/src/github.com/filebrowser/filebrowser
@@ -8,7 +8,7 @@ RUN tar -xvf ${VERSION}.tar.gz --strip 1
 RUN go get ./...
 WORKDIR /go/src/github.com/filebrowser/filebrowser/cmd/filebrowser
 RUN CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags "-X main.version=${VERSION}"
-FROM hasholding/alpine-base
+FROM hasholding/alpine-base:3.7
 LABEL maintainer "Levent SAGIROGLU <LSagiroglu@gmail.com>"
 
 VOLUME /shared 
